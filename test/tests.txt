@@ -1,0 +1,25 @@
+
+banana.o:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <.text>:
+   0:	e3a00014 	mov	r0, #20
+   4:	e3a01032 	mov	r1, #50	; 0x32
+   8:	e3a03001 	mov	r3, #1
+   c:	e1a02311 	lsl	r2, r1, r3
+  10:	e1a02082 	lsl	r2, r2, #1
+  14:	e5932100 	ldr	r2, [r3, #256]	; 0x100
+  18:	e2822032 	add	r2, r2, #50	; 0x32
+  1c:	e3a0521f 	mov	r5, #-268435455	; 0xf0000001
+  20:	e1a052c5 	asr	r5, r5, #5
+
+Disassembly of section .ARM.attributes:
+
+00000000 <.ARM.attributes>:
+   0:	00001341 	andeq	r1, r0, r1, asr #6
+   4:	61656100 	cmnvs	r5, r0, lsl #2
+   8:	01006962 	tsteq	r0, r2, ror #18
+   c:	00000009 	andeq	r0, r0, r9
+  10:	01080106 	tsteq	r8, r6, lsl #2

@@ -1,0 +1,102 @@
+Archive member included to satisfy reference by file (symbol)
+
+obj\libc.a(crt.o)             (_start)
+obj\libc.a(libc.o)            obj\mersenne.o (putc)
+obj\libsys.a(boot.o)          (_reset)
+obj\libsys.a(kernel.o)        obj\libsys.a(boot.o) (kernel_init)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.kernel         0x00000000      0x488
+ obj\libsys.a:boot.o()
+ .text          0x00000000       0xf0 obj\libsys.a(boot.o)
+                0x00000000                _reset
+                0x000000b4                kputc
+                0x000000c0                kgetc
+                0x000000cc                klock
+                0x000000dc                kunlock
+ .data          0x000000f0        0x0 obj\libsys.a(boot.o)
+ .bss           0x000000f0        0x0 obj\libsys.a(boot.o)
+ .rodata        0x000000f0       0x14 obj\libsys.a(boot.o)
+ .ARM.attributes
+                0x00000104       0x20 obj\libsys.a(boot.o)
+ obj\libsys.a:kernel.o()
+ .text          0x00000124      0x294 obj\libsys.a(kernel.o)
+                0x00000124                kernel_init
+                0x00000148                console_isr
+                0x000001fc                sys_read
+                0x000002e8                sys_write
+                0x0000033c                kputs
+                0x0000038c                panic
+ .data          0x000003b8        0xc obj\libsys.a(kernel.o)
+ .bss           0x000003c4       0x10 obj\libsys.a(kernel.o)
+ .rodata        0x000003d4       0x16 obj\libsys.a(kernel.o)
+ .comment       0x000003ea       0x6e obj\libsys.a(kernel.o)
+                                 0x6f (size before relaxing)
+ .ARM.attributes
+                0x00000458       0x30 obj\libsys.a(kernel.o)
+                0x00001000                . = 0x1000
+
+.text           0x00001000     0x14b5
+ obj\libc.a:crt.o()
+ .text          0x00001000       0x18 obj\libc.a(crt.o)
+                0x00001000                _start
+                0x00001008                read
+                0x00001010                write
+ .data          0x00001018        0x0 obj\libc.a(crt.o)
+ .bss           0x00001018        0x0 obj\libc.a(crt.o)
+ .ARM.attributes
+                0x00001018       0x20 obj\libc.a(crt.o)
+ obj\libc.a:libc.o()
+ .text          0x00001038      0x5a4 obj\libc.a(libc.o)
+                0x00001038                getc
+                0x00001070                putc
+                0x000010ac                puts
+                0x00001108                gets
+                0x00001214                atoi
+                0x000013a0                itoa
+                0x00001560                geti
+                0x0000159c                puti
+ .data          0x000015dc        0x0 obj\libc.a(libc.o)
+ .bss           0x000015dc        0x0 obj\libc.a(libc.o)
+ .comment       0x000015dc       0x6f obj\libc.a(libc.o)
+ .ARM.attributes
+                0x000015dc       0x30 obj\libc.a(libc.o)
+ *.o()
+ .text          0x0000160c      0x418 obj\mersenne.o
+                0x0000160c                init_genrand
+                0x00001724                genrand_int32
+                0x00001984                genrand_int31
+                0x000019a8                main
+ .data          0x00001a24        0xc obj\mersenne.o
+ .bss           0x00001a30      0x9c0 obj\mersenne.o
+ .rodata        0x000023f0       0x27 obj\mersenne.o
+ .comment       0x00002417       0x6e obj\mersenne.o
+                                 0x6f (size before relaxing)
+ .ARM.attributes
+                0x00002485       0x30 obj\mersenne.o
+ .iplt          0x000024b5        0x0 obj\mersenne.o
+ .rel.iplt      0x000024b5        0x0 obj\mersenne.o
+ .igot.plt      0x000024b5        0x0 obj\mersenne.o
+LOAD obj\mersenne.o
+LOAD obj\libc.a
+LOAD obj\libsys.a
+OUTPUT(mersenne.exe elf32-littlearm)
+
+.glue_7         0x000024b8        0x0
+ .glue_7        0x000024b8        0x0 linker stubs
+
+.glue_7t        0x000024b8        0x0
+ .glue_7t       0x000024b8        0x0 linker stubs
+
+.vfp11_veneer   0x000024b8        0x0
+ .vfp11_veneer  0x000024b8        0x0 linker stubs
+
+.v4_bx          0x000024b8        0x0
+ .v4_bx         0x000024b8        0x0 linker stubs

@@ -1,0 +1,6 @@
+report
+build
+journal
+test.log
+*.sh
+debug.txt

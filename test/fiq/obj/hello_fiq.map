@@ -1,0 +1,102 @@
+Archive member included to satisfy reference by file (symbol)
+
+obj\libc.a(crt.o)             (_start)
+obj\libc.a(libc.o)            obj\hello_fiq.o (getc)
+obj\libsys.a(boot.o)          (_reset)
+obj\libsys.a(kernel.o)        obj\libsys.a(boot.o) (bogo_clock)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.kernel         0x00000000      0x4fc
+ obj\libsys.a:boot.o()
+ .text          0x00000000      0x13c obj\libsys.a(boot.o)
+                0x00000000                _reset
+                0x000000fc                kputc
+                0x00000108                kgetc
+                0x00000114                klock
+                0x00000124                kunlock
+ .data          0x0000013c        0x0 obj\libsys.a(boot.o)
+ .bss           0x0000013c        0x0 obj\libsys.a(boot.o)
+ .rodata        0x0000013c       0x14 obj\libsys.a(boot.o)
+ .ARM.attributes
+                0x00000150       0x20 obj\libsys.a(boot.o)
+ obj\libsys.a:kernel.o()
+ .text          0x00000170      0x2b8 obj\libsys.a(kernel.o)
+                0x00000170                kernel_init
+                0x00000194                console_isr
+                0x00000248                sys_read
+                0x00000334                sys_write
+                0x00000388                sys_clock
+                0x000003ac                kputs
+                0x000003fc                panic
+ .data          0x00000428        0xc obj\libsys.a(kernel.o)
+ .bss           0x00000434       0x14 obj\libsys.a(kernel.o)
+                0x00000444                bogo_clock
+ .rodata        0x00000448       0x16 obj\libsys.a(kernel.o)
+ .comment       0x0000045e       0x6e obj\libsys.a(kernel.o)
+                                 0x6f (size before relaxing)
+ .ARM.attributes
+                0x000004cc       0x30 obj\libsys.a(kernel.o)
+                0x00001000                . = 0x1000
+
+.text           0x00001000      0x8af
+ obj\libc.a:crt.o()
+ .text          0x00001000       0x20 obj\libc.a(crt.o)
+                0x00001000                _start
+                0x00001008                read
+                0x00001010                write
+                0x00001018                clock
+ .data          0x00001020        0x0 obj\libc.a(crt.o)
+ .bss           0x00001020        0x0 obj\libc.a(crt.o)
+ .ARM.attributes
+                0x00001020       0x20 obj\libc.a(crt.o)
+ obj\libc.a:libc.o()
+ .text          0x00001040      0x5a4 obj\libc.a(libc.o)
+                0x00001040                getc
+                0x00001078                putc
+                0x000010b4                puts
+                0x00001110                gets
+                0x0000121c                atoi
+                0x000013a8                itoa
+                0x00001568                geti
+                0x000015a4                puti
+ .data          0x000015e4        0x0 obj\libc.a(libc.o)
+ .bss           0x000015e4        0x0 obj\libc.a(libc.o)
+ .comment       0x000015e4       0x6f obj\libc.a(libc.o)
+ .ARM.attributes
+                0x000015e4       0x30 obj\libc.a(libc.o)
+ *.o()
+ .text          0x00001614      0x138 obj\hello_fiq.o
+                0x00001614                main
+ .data          0x0000174c        0x0 obj\hello_fiq.o
+ .bss           0x0000174c        0x0 obj\hello_fiq.o
+ .rodata        0x0000174c       0xc5 obj\hello_fiq.o
+ .comment       0x00001811       0x6e obj\hello_fiq.o
+                                 0x6f (size before relaxing)
+ .ARM.attributes
+                0x0000187f       0x30 obj\hello_fiq.o
+ .iplt          0x000018af        0x0 obj\hello_fiq.o
+ .rel.iplt      0x000018af        0x0 obj\hello_fiq.o
+ .igot.plt      0x000018af        0x0 obj\hello_fiq.o
+LOAD obj\hello_fiq.o
+LOAD obj\libc.a
+LOAD obj\libsys.a
+OUTPUT(hello_fiq.exe elf32-littlearm)
+
+.glue_7         0x000018b0        0x0
+ .glue_7        0x000018b0        0x0 linker stubs
+
+.glue_7t        0x000018b0        0x0
+ .glue_7t       0x000018b0        0x0 linker stubs
+
+.vfp11_veneer   0x000018b0        0x0
+ .vfp11_veneer  0x000018b0        0x0 linker stubs
+
+.v4_bx          0x000018b0        0x0
+ .v4_bx         0x000018b0        0x0 linker stubs

@@ -1,0 +1,100 @@
+Archive member included to satisfy reference by file (symbol)
+
+obj\libc.a(crt.o)             (_start)
+obj\libc.a(libc.o)            obj\hello_segFault.o (getc)
+obj\libsys.a(boot.o)          (_reset)
+obj\libsys.a(kernel.o)        obj\libsys.a(boot.o) (kernel_init)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+
+.kernel         0x00000000      0x4d4
+ obj\libsys.a:boot.o()
+ .text          0x00000000      0x110 obj\libsys.a(boot.o)
+                0x00000000                _reset
+                0x000000d0                kputc
+                0x000000dc                kgetc
+                0x000000e8                klock
+                0x000000f8                kunlock
+ .data          0x00000110        0x0 obj\libsys.a(boot.o)
+ .bss           0x00000110        0x0 obj\libsys.a(boot.o)
+ .rodata        0x00000110       0x3f obj\libsys.a(boot.o)
+ .ARM.attributes
+                0x0000014f       0x20 obj\libsys.a(boot.o)
+ obj\libsys.a:kernel.o()
+ *fill*         0x0000016f        0x1 
+ .text          0x00000170      0x294 obj\libsys.a(kernel.o)
+                0x00000170                kernel_init
+                0x00000194                console_isr
+                0x00000248                sys_read
+                0x00000334                sys_write
+                0x00000388                kputs
+                0x000003d8                panic
+ .data          0x00000404        0xc obj\libsys.a(kernel.o)
+ .bss           0x00000410       0x10 obj\libsys.a(kernel.o)
+ .rodata        0x00000420       0x16 obj\libsys.a(kernel.o)
+ .comment       0x00000436       0x6e obj\libsys.a(kernel.o)
+                                 0x6f (size before relaxing)
+ .ARM.attributes
+                0x000004a4       0x30 obj\libsys.a(kernel.o)
+                0x00008000                . = 0x8000
+
+.text           0x00008000      0x877
+ obj\libc.a:crt.o()
+ .text          0x00008000       0x24 obj\libc.a(crt.o)
+                0x00008000                _start
+                0x00008014                read
+                0x0000801c                write
+ .data          0x00008024        0x0 obj\libc.a(crt.o)
+ .bss           0x00008024        0x0 obj\libc.a(crt.o)
+ .ARM.attributes
+                0x00008024       0x20 obj\libc.a(crt.o)
+ obj\libc.a:libc.o()
+ .text          0x00008044      0x5a4 obj\libc.a(libc.o)
+                0x00008044                getc
+                0x0000807c                putc
+                0x000080b8                puts
+                0x00008114                gets
+                0x00008220                atoi
+                0x000083ac                itoa
+                0x0000856c                geti
+                0x000085a8                puti
+ .data          0x000085e8        0x0 obj\libc.a(libc.o)
+ .bss           0x000085e8        0x0 obj\libc.a(libc.o)
+ .comment       0x000085e8       0x6f obj\libc.a(libc.o)
+ .ARM.attributes
+                0x000085e8       0x30 obj\libc.a(libc.o)
+ *.o()
+ .text          0x00008618      0x118 obj\hello_segFault.o
+                0x00008618                main
+ .data          0x00008730        0x0 obj\hello_segFault.o
+ .bss           0x00008730        0x0 obj\hello_segFault.o
+ .rodata        0x00008730       0xa9 obj\hello_segFault.o
+ .comment       0x000087d9       0x6e obj\hello_segFault.o
+                                 0x6f (size before relaxing)
+ .ARM.attributes
+                0x00008847       0x30 obj\hello_segFault.o
+ .iplt          0x00008877        0x0 obj\hello_segFault.o
+ .rel.iplt      0x00008877        0x0 obj\hello_segFault.o
+ .igot.plt      0x00008877        0x0 obj\hello_segFault.o
+LOAD obj\hello_segFault.o
+LOAD obj\libc.a
+LOAD obj\libsys.a
+OUTPUT(hello_segFault.exe elf32-littlearm)
+
+.glue_7         0x00008878        0x0
+ .glue_7        0x00008878        0x0 linker stubs
+
+.glue_7t        0x00008878        0x0
+ .glue_7t       0x00008878        0x0 linker stubs
+
+.vfp11_veneer   0x00008878        0x0
+ .vfp11_veneer  0x00008878        0x0 linker stubs
+
+.v4_bx          0x00008878        0x0
+ .v4_bx         0x00008878        0x0 linker stubs

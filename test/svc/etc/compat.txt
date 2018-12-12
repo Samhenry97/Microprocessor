@@ -1,0 +1,4 @@
+mode=svc
+pc=entry
+sp_usr=0x7000
+sp_svc=0x7800
